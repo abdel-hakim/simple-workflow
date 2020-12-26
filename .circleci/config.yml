@@ -31,3 +31,4 @@ workflows:
       - print_hello
       - print_world:                    # add : :D
           requires: [print_hello]       # applay [List] , [ ]
+      - print_env
