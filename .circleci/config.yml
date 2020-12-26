@@ -25,5 +25,5 @@ workflows:
     jobs:
       - welcome/run
       - print_hello
-      - print_world
+      - print_world:                    # add : :D
           requires: [print_hello]       # applay [List] , [ ]
