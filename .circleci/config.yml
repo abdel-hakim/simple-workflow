@@ -11,6 +11,7 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - run: echo "hello"
+      - run: echo My pipeline id is << pipeline.id >> and my git branch is << pipeline.git.branch >>.
   print_world:
     docker:
       - image: circleci/node:13.8.0
