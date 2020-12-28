@@ -8,9 +8,9 @@ command:
     steps:
       - run: echo << parameters.id >>
 # Use a package of configuration called an orb.
-orbs:
+# orbs:
   # Declare a dependency on the welcome-orb
-  welcome: circleci/welcome-orb@0.4.1
+  # welcome: circleci/welcome-orb@0.4.1
 # Orchestrate or schedule a set of jobs
 
 # defaults: &defaults
@@ -79,7 +79,7 @@ workflows:
   welcome:
     # Run the welcome/run job in its own container
     jobs:
-      - welcome/run
+      # - welcome/run
       - print_hello
       - print_world:                    # add : :D
           requires: [print_hello]       # applay [List] , [ ]
