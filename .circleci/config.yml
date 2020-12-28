@@ -26,6 +26,7 @@ jobs:
           name: "echo an env var that is part of our project and created by me"
           command: | 
           echo $name
+#
           echo $CIRCLE_SHA1	        #The SHA1 hash of the last commit of the current build
           echo $CIRCLE_BRANCH	      #The name of the Git branch currently being built
           echo $CIRCLE_WORKFLOW_ID	#A unique identifier for the workflow instance of the current job
