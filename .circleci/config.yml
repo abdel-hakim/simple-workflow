@@ -73,14 +73,22 @@ jobs:
 
   job_failures:
     <<: *defaults                         # 👆🏻1️⃣
+    #senario 1
+    # steps:
+    #   - attach_workspace:          
+    #       at: ~/
+    #   - run: cat ~/ouadsfsdfsfstput.txddsft
+    #   - run:
+    #       name: Upload Failed Tests
+    #       command: curl --data fail_tests.log http://example.com/error_logs
+    #       when: on_fail
+    #senario 2  From video for testing
     steps:
-      - attach_workspace:          
-          at: ~/
-      - run: cat ~/ouadsfsdfsfstput.txddsft
+      - run: return 1
       - run:
-          name: Upload Failed Tests
-          command: curl --data fail_tests.log http://example.com/error_logs
-          when: on_fail
+          name: on error
+          command: echo "Hello Error!"
+          when: on_fail    
 
 
 
