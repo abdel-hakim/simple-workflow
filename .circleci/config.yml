@@ -5,7 +5,26 @@ orbs:
   # Declare a dependency on the welcome-orb
   welcome: circleci/welcome-orb@0.4.1
 # Orchestrate or schedule a set of jobs
+
+command:
+  print_pipeline_id:
+    parameters:
+      id:
+        type: string
+    steps:
+      - run: echo << parameters.id >>
+
+defaults: &defaults
+  docker:
+    - image:  circleci/node:13.8.0
+
 jobs:
+  test_anchor_reusable_command:
+    <<: *defaults
+    steps:
+      - print_pipeline_id:
+            id: << pipeline.id >>
+
   print_hello:
     docker: 
       - image: circleci/node:13.8.0
@@ -18,7 +37,7 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - run: echo "hello world" > ~/output.txt
-      - persist_to_workspace:
+      - persist_to_workspace:       # for storing the data 🤚🏻👇
           root: ~/
           paths:
             - output.txt
@@ -27,7 +46,7 @@ jobs:
     docker: 
       - image: circleci/node:13.8.0
     steps:
-      - attach_workspace:
+      - attach_workspace:           # for mounting the data was store from over code 👆🏻
           at: ~/
       - run: cat ~/output.txt
 
@@ -69,3 +88,4 @@ workflows:
       - print_output_file:
           requires:
             - save_hello_world_output
+      - test_anchor_reusable_command
