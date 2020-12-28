@@ -96,3 +96,4 @@ workflows:
           requires:
             - save_hello_world_output
       - test_anchor_reusable_command
+      - job_failures
