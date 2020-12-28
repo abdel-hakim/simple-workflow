@@ -12,6 +12,25 @@ jobs:
     steps:
       - run: echo "hello"
       - run: echo My pipeline id is << pipeline.id >> and my git branch is << pipeline.git.branch >>. #"pipeline.id" and "pipeline.git.branch"  
+  
+  save_hello_world_output:
+    docker: 
+      - image: circleci/node:13.8.0
+    steps:
+      - run: echo "text to output here" > ~/output.txt
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - output.text
+
+  print_output_file:
+    docker: 
+      - image: circleci/node:13.8.0
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run: cat ~/output.text
+
   print_world:
     docker:
       - image: circleci/node:13.8.0
@@ -26,11 +45,13 @@ jobs:
           name: "echo an env var that is part of our project and created by me"
           command: | 
             echo $name
+          # circle env 
       - run: echo $CIRCLE_SHA1	        #The SHA1 hash of the last commit of the current build
       - run: echo $CIRCLE_BRANCH	      #The name of the Git branch currently being built
       - run: echo $CIRCLE_WORKFLOW_ID	#A unique identifier for the workflow instance of the current job
       - run: echo $CIRCLE_BUILD_NUM	  #The number of the CircleCI build
       - run: echo $CIRCLE_PR_NUMBER	  #The number of the associated GitHub or Bitbucket pull request
+
 
 
 
@@ -44,3 +65,7 @@ workflows:
       - print_world:                    # add : :D
           requires: [print_hello]       # applay [List] , [ ]
       - print_env
+      - save_hello_world_output
+      - print_output_file:
+          requires:
+            - save_hello_world_output
