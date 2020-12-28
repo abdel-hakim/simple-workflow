@@ -11,7 +11,7 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - run: echo "hello"
-      - run: echo My pipeline id is << pipeline.id >> and my git branch is << pipeline.git.branch >>.
+      - run: echo My pipeline id is << pipeline.id >> and my git branch is << pipeline.git.branch >>. #"pipeline.id" and "pipeline.git.branch"  
   print_world:
     docker:
       - image: circleci/node:13.8.0
@@ -21,7 +21,17 @@ jobs:
     docker:
       - image: circleci/node:13.8.0
     steps:
-      - run: echo $name
+      - checkout
+      - run:
+          name: "echo an env var that is part of our project and created by me"
+          command: | 
+          echo $name
+          echo $CIRCLE_SHA1	        #The SHA1 hash of the last commit of the current build
+          echo $CIRCLE_BRANCH	      #The name of the Git branch currently being built
+          echo $CIRCLE_WORKFLOW_ID	#A unique identifier for the workflow instance of the current job
+          echo $CIRCLE_BUILD_NUM	  #The number of the CircleCI build
+          echo $CIRCLE_PR_NUMBER	  #The number of the associated GitHub or Bitbucket pull request
+
 
 
 workflows:
