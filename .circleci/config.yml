@@ -7,14 +7,14 @@ commands:
         type: string
     steps:
       - run: echo << parameters.id >>
-      
+
 # Use a package of configuration called an orb.
 orbs:
   # Declare a dependency on the welcome-orb
   welcome: circleci/welcome-orb@0.4.1
 # Orchestrate or schedule a set of jobs
 
-defaults: &defaults
+defaults: &defaults                     # 👇1️⃣
   docker:
     - image:  circleci/node:13.8.0
 
@@ -71,6 +71,13 @@ jobs:
       - run: echo $CIRCLE_BUILD_NUM	  #The number of the CircleCI build
       - run: echo $CIRCLE_PR_NUMBER	  #The number of the associated GitHub or Bitbucket pull request
 
+  job_failures:
+    <<: *defaults                         # 👆🏻1️⃣
+    steps:
+      - attach_workspace:          
+          at: ~/
+      - run: cat ~/ouadsfsdfsfstput.txddsft
+          when: on_fail
 
 
 
