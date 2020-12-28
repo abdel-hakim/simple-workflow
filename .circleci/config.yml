@@ -7,20 +7,20 @@ commands:
         type: string
     steps:
       - run: echo << parameters.id >>
+      
 # Use a package of configuration called an orb.
-# orbs:
+orbs:
   # Declare a dependency on the welcome-orb
-  # welcome: circleci/welcome-orb@0.4.1
+  welcome: circleci/welcome-orb@0.4.1
 # Orchestrate or schedule a set of jobs
 
-# defaults: &defaults
-#   docker:
-#     - image:  circleci/node:13.8.0
+defaults: &defaults
+  docker:
+    - image:  circleci/node:13.8.0
 
 jobs:
   test_anchor_reusable_command:
-    docker:
-      - image:  circleci/node:13.8.0
+    <<: *defaults
     steps:
       - print_pipeline_id:
            id: << pipeline.id >>
