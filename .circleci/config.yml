@@ -1,110 +1,13 @@
 # Use the latest 2.1 version of CircleCI pipeline process engine. See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
-commands:
-  print_pipeline_id:
-    parameters:
-      id:
-        type: string
-    steps:
-      - run: echo << parameters.id >>
-
 # Use a package of configuration called an orb.
 orbs:
   # Declare a dependency on the welcome-orb
   welcome: circleci/welcome-orb@0.4.1
 # Orchestrate or schedule a set of jobs
-
-defaults: &defaults                     # 👇1️⃣
-  docker:
-    - image:  circleci/node:13.8.0
-
-jobs:
-  test_anchor_reusable_command:
-    <<: *defaults
-    steps:
-      - print_pipeline_id:
-           id: << pipeline.id >>
-
-  print_hello:
-    docker: 
-      - image: circleci/node:13.8.0
-    steps:
-      - run: echo "hello"
-      - run: echo My pipeline id is << pipeline.id >> and my git branch is << pipeline.git.branch >>. #"pipeline.id" and "pipeline.git.branch"  
-  
-  save_hello_world_output:
-    docker: 
-      - image: circleci/node:13.8.0
-    steps:
-      - run: echo "hello world" > ~/output.txt
-      - persist_to_workspace:       # for storing the data 🤚🏻👇
-          root: ~/
-          paths:
-            - output.txt
-
-  print_output_file:
-    docker: 
-      - image: circleci/node:13.8.0
-    steps:
-      - attach_workspace:           # for mounting the data was store from over code 👆🏻
-          at: ~/
-      - run: cat ~/output.txt
-
-  print_world:
-    docker:
-      - image: circleci/node:13.8.0
-    steps:
-      - run: echo "world"
-  print_env:
-    docker:
-      - image: circleci/node:13.8.0
-    steps:
-      - checkout
-      - run:
-          name: "echo an env var that is part of our project and created by me"
-          command: | 
-            echo $name
-          # circle env 
-      - run: echo $CIRCLE_SHA1	        #The SHA1 hash of the last commit of the current build
-      - run: echo $CIRCLE_BRANCH	      #The name of the Git branch currently being built
-      - run: echo $CIRCLE_WORKFLOW_ID	#A unique identifier for the workflow instance of the current job
-      - run: echo $CIRCLE_BUILD_NUM	  #The number of the CircleCI build
-      - run: echo $CIRCLE_PR_NUMBER	  #The number of the associated GitHub or Bitbucket pull request
-
-  job_failures:
-    <<: *defaults                         # 👆🏻1️⃣
-    #senario 1
-    # steps:
-    #   - attach_workspace:          
-    #       at: ~/
-    #   - run: cat ~/ouadsfsdfsfstput.txddsft
-    #   - run:
-    #       name: Upload Failed Tests
-    #       command: curl --data fail_tests.log http://example.com/error_logs
-    #       when: on_fail
-    #senario 2  From video for testing
-    steps:
-      - run: return 1
-      - run:
-          name: on error
-          command: echo "Hello Error!"
-          when: on_fail    
-
-
-
 workflows:
   # Name the workflow "welcome"
   welcome:
     # Run the welcome/run job in its own container
     jobs:
-      # - welcome/run
-      - print_hello
-      - print_world:                    # add : :D
-          requires: [print_hello]       # applay [List] , [ ]
-      - print_env
-      - save_hello_world_output
-      - print_output_file:
-          requires:
-            - save_hello_world_output
-      - test_anchor_reusable_command
-      - job_failures
+      - welcome/run
